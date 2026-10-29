@@ -1,0 +1,137 @@
+{
+  "institution": "National Board of Accreditation / ABET Framework",
+  "version": "Annexure A 2026-2027",
+  "program_outcomes": [
+    {
+      "code": "PO1",
+      "title": "Engineering Knowledge",
+      "description": "Apply the knowledge of mathematics, science, engineering fundamentals, and an engineering specialization to the solution of complex engineering problems."
+    },
+    {
+      "code": "PO2",
+      "title": "Problem Analysis",
+      "description": "Identify, formulate, review research literature, and analyze complex engineering problems reaching substantiated conclusions using first principles of mathematics, natural sciences, and engineering sciences."
+    },
+    {
+      "code": "PO3",
+      "title": "Design/Development of Solutions",
+      "description": "Design solutions for complex engineering problems and design system components or processes that meet the specified needs with appropriate consideration for public health and safety, and cultural, societal, and environmental considerations."
+    },
+    {
+      "code": "PO4",
+      "title": "Conduct Investigations of Complex Problems",
+      "description": "Use research-based knowledge and research methods including design of experiments, analysis and interpretation of data, and synthesis of the information to provide valid conclusions."
+    },
+    {
+      "code": "PO5",
+      "title": "Modern Tool Usage",
+      "description": "Create, select, and apply appropriate techniques, resources, and modern engineering and IT tools including prediction and modeling to complex engineering activities with an understanding of the limitations."
+    },
+    {
+      "code": "PO6",
+      "title": "The Engineer and Society",
+      "description": "Apply reasoning informed by the contextual knowledge to assess societal, health, safety, legal and cultural issues and the consequent responsibilities relevant to the professional engineering practice."
+    },
+    {
+      "code": "PO7",
+      "title": "Environment and Sustainability",
+      "description": "Understand the impact of the professional engineering solutions in societal and environmental contexts, and demonstrate the knowledge of, and need for sustainable development."
+    },
+    {
+      "code": "PO8",
+      "title": "Ethics",
+      "description": "Apply ethical principles and commit to professional ethics and responsibilities and norms of the engineering practice."
+    },
+    {
+      "code": "PO9",
+      "title": "Individual and Team Work",
+      "description": "Function effectively as an individual, and as a member or leader in diverse teams, and in multidisciplinary settings."
+    },
+    {
+      "code": "PO10",
+      "title": "Communication",
+      "description": "Communicate effectively on complex engineering activities with the engineering community and with society at large, such as being able to comprehend and write effective reports and design documentation, make effective presentations, and give and receive clear instructions."
+    },
+    {
+      "code": "PO11",
+      "title": "Project Management and Finance",
+      "description": "Demonstrate knowledge and understanding of the engineering and management principles and apply these to one's own work, as a member and leader in a team, to manage projects and in multidisciplinary environments."
+    },
+    {
+      "code": "PO12",
+      "title": "Life-long Learning",
+      "description": "Recognize the need for, and have the preparation and ability to engage in independent and life-long learning in the broadest context of technological change."
+    }
+  ],
+  "program_specific_outcomes": [
+    {
+      "code": "PSO1",
+      "title": "Systems & Algorithmic Foundations",
+      "description": "Analyze, design, and optimize complex software systems, algorithmic architectures, and computational models adhering to industry benchmarks."
+    },
+    {
+      "code": "PSO2",
+      "title": "Applied Intelligent & Autonomous Systems",
+      "description": "Implement, deploy, and validate modern autonomous workflows, intelligent perception pipelines, and data-driven systems."
+    },
+    {
+      "code": "PSO3",
+      "title": "Ethical Engineering & Industrial Rigor",
+      "description": "Lead multi-disciplinary engineering initiatives incorporating safety standards, algorithmic accountability, and verified institutional practices."
+    }
+  ],
+  "blooms_levels": [
+    {
+      "level": 1,
+      "name": "Remember",
+      "description": "Recall facts and basic concepts",
+      "approved_verbs": ["Define", "Identify", "List", "Recall", "Recognize", "State", "Repeat"],
+      "banned_verbs": ["Understand", "Know", "Learn", "Familiarize"]
+    },
+    {
+      "level": 2,
+      "name": "Understand",
+      "description": "Explain ideas or concepts",
+      "approved_verbs": ["Classify", "Describe", "Discuss", "Explain", "Express", "Identify", "Locate", "Review"],
+      "banned_verbs": ["Appreciate", "Grasp", "Comprehend"]
+    },
+    {
+      "level": 3,
+      "name": "Apply",
+      "description": "Use information in new situations",
+      "approved_verbs": ["Apply", "Calculate", "Demonstrate", "Implement", "Operate", "Solve", "Execute", "Simulate"]
+    },
+    {
+      "level": 4,
+      "name": "Analyze",
+      "description": "Draw connections among ideas",
+      "approved_verbs": ["Analyze", "Appraise", "Compare", "Contrast", "Differentiate", "Discriminate", "Distinguish", "Examine", "Test"]
+    },
+    {
+      "level": 5,
+      "name": "Evaluate",
+      "description": "Justify a stand or decision",
+      "approved_verbs": ["Appraise", "Argue", "Defend", "Judge", "Select", "Support", "Value", "Critique", "Verify"]
+    },
+    {
+      "level": 6,
+      "name": "Create",
+      "description": "Produce new or original work",
+      "approved_verbs": ["Design", "Assemble", "Construct", "Formulate", "Develop", "Author", "Investigate", "Synthesize"]
+    }
+  ],
+  "co_po_mapping_rules": {
+    "scale": {
+      "3": "Substantial / High correlation (Directly addressed through dedicated instruction, assignments, and exam assessments > 40% of CO)",
+      "2": "Moderate / Medium correlation (Addressed through coursework, mini-projects, or lab sessions 20% to 40% of CO)",
+      "1": "Slight / Low correlation (Touched upon tangentially or as prerequisite foundation < 20% of CO)",
+      "": "No correlation"
+    },
+    "requirements": [
+      "Every CO must map to at least one PO with strength 1, 2, or 3.",
+      "Each non-blank correlation must include a single-line articulation justification statement.",
+      "Laboratory components must provide substantial support (3) to PO4 (Investigation) and PO5 (Tool Usage).",
+      "Courses with ethics components must provide correlation (2 or 3) to PO8 (Ethics)."
+    ]
+  }
+}

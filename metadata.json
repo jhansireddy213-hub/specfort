@@ -1,0 +1,6 @@
+{
+  "name": "Academic Governance System",
+  "description": "Comprehensive academic governance, curriculum review board, syllabus versioning, and accreditation matrix system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

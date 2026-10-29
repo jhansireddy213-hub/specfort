@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --font-anton: 'Anton', sans-serif;
+  --font-anybody: 'Anybody', sans-serif;
+  --font-archivo: 'Archivo Narrow', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-gov-canvas: #f8fafc;
+  --color-gov-surface: #eefcff;
+  --color-gov-surface-dim: #abe3ee;
+  --color-gov-primary: #00696c;
+  --color-gov-cyan: #47f0f6;
+  --color-gov-magenta: #ff0dde;
+  --color-gov-purple: #aa0093;
+  --color-gov-blue: #0a8cdc;
+  --color-gov-border: #e2e8f0;
+  --color-gov-border-strong: #bac9ca;
+  --color-gov-dark: #001f24;
+  --color-gov-muted: #3b494a;
+}
+
+body {
+  font-family: 'Anybody', sans-serif;
+  background-color: #f8fafc;
+  color: #001f24;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+}
+
+.font-display {
+  font-family: 'Anton', sans-serif;
+  letter-spacing: -0.015em;
+}
+
+.font-label {
+  font-family: 'Archivo Narrow', sans-serif;
+  letter-spacing: 0.025em;
+}
+
+.font-body {
+  font-family: 'Anybody', sans-serif;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

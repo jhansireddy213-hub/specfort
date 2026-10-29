@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{COURSE_CODE}} - {{COURSE_TITLE}} | Course Specification (Integrated)</title>
+  <style>
+    @page { size: A4; margin: 20mm; }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #0f172a;
+      line-height: 1.5;
+      margin: 0;
+      padding: 30px;
+      background: #ffffff;
+    }
+    .header-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    .header-table td { padding: 8px; border: 1px solid #cbd5e1; }
+    .inst-header { text-align: center; border-bottom: 2px solid #00696c; padding-bottom: 12px; margin-bottom: 20px; }
+    .inst-title { font-size: 20px; font-weight: bold; color: #00696c; text-transform: uppercase; }
+    .doc-title { font-size: 15px; font-weight: 600; color: #475569; margin-top: 4px; }
+    h2 { font-size: 14px; text-transform: uppercase; color: #00696c; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-top: 24px; }
+    table.data-table { width: 100%; border-collapse: collapse; margin: 12px 0 20px 0; font-size: 12px; }
+    table.data-table th, table.data-table td { border: 1px solid #cbd5e1; padding: 6px 10px; }
+    table.data-table th { background-color: #f1f5f9; font-weight: 600; text-align: left; }
+    .co-po-cell { text-align: center; font-weight: bold; }
+    .strength-3 { background-color: #dcfce7; color: #166534; }
+    .strength-2 { background-color: #cffafe; color: #0e7490; }
+    .strength-1 { background-color: #fef3c7; color: #92400e; }
+    .badge { display: inline-block; padding: 2px 6px; font-size: 10px; font-weight: bold; border-radius: 4px; background: #e0f2fe; color: #0369a1; }
+    .footer { margin-top: 40px; border-top: 1px solid #cbd5e1; padding-top: 12px; font-size: 11px; color: #64748b; display: flex; justify-content: space-between; }
+    .print-btn {
+      position: fixed; top: 15px; right: 15px; background: #00696c; color: #fff; border: none; padding: 8px 16px;
+      font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    @media print { .print-btn { display: none; } }
+  </style>
+</head>
+<body>
+  <button class="print-btn" onclick="window.print()">Download as PDF</button>
+
+  <div class="inst-header">
+    <div class="inst-title">Faculty of Engineering & Technology</div>
+    <div class="doc-title">Course Specification Document (Integrated Laboratory Curriculum)</div>
+    <div style="font-size: 11px; color: #64748b; margin-top: 4px;">NBA & ABET Accredited Format · Academic Year 2026-2027</div>
+  </div>
+
+  <h2>1. Course General Information</h2>
+  <table class="header-table" style="font-size: 12px;">
+    <tr>
+      <td style="width: 20%; background: #f8fafc; font-weight: bold;">Course Code</td>
+      <td style="width: 30%;">{{COURSE_CODE}}</td>
+      <td style="width: 20%; background: #f8fafc; font-weight: bold;">Course Title</td>
+      <td style="width: 30%;">{{COURSE_TITLE}}</td>
+    </tr>
+    <tr>
+      <td style="background: #f8fafc; font-weight: bold;">Department</td>
+      <td>{{DEPARTMENT}}</td>
+      <td style="background: #f8fafc; font-weight: bold;">Course Type</td>
+      <td><span class="badge">{{COURSE_TYPE}} (Integrated Lab)</span></td>
+    </tr>
+    <tr>
+      <td style="background: #f8fafc; font-weight: bold;">Credit Structure (L:T:P)</td>
+      <td><strong>{{CREDITS_LTP}}</strong> (Total Credits: {{TOTAL_CREDITS}})</td>
+      <td style="background: #f8fafc; font-weight: bold;">Contact Hours</td>
+      <td>{{TOTAL_HOURS}} Hours ({{LECTURE_HOURS}}h Lec + {{LAB_HOURS}}h Lab)</td>
+    </tr>
+  </table>
+
+  <h2>2. Course Summary & Rationale</h2>
+  <p style="font-size: 12px; text-align: justify; color: #334155;">{{COURSE_SUMMARY}}</p>
+
+  <h2>3. Course Outcomes (COs) & Bloom's Taxonomy</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 10%;">CO ID</th>
+        <th>Course Learning Outcome Statement</th>
+        <th style="width: 15%;">Bloom's Level</th>
+        <th style="width: 12%;">Target POs</th>
+      </tr>
+    </thead>
+    <tbody id="co-table-body">
+      {{CO_TABLE_ROWS}}
+    </tbody>
+  </table>
+
+  <h2>4. Course Units & Laboratory Exercises</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 12%;">Unit #</th>
+        <th style="width: 28%;">Title & Focus</th>
+        <th>Topics & Practical Benchwork</th>
+        <th style="width: 12%; text-align: right;">Contact Hrs</th>
+      </tr>
+    </thead>
+    <tbody id="unit-table-body">
+      {{UNIT_TABLE_ROWS}}
+    </tbody>
+  </table>
+
+  <h2>5. CO-PO-PSO Articulation Matrix</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>CO</th>
+        <th>PO1</th><th>PO2</th><th>PO3</th><th>PO4</th><th>PO5</th><th>PO6</th>
+        <th>PO7</th><th>PO8</th><th>PO9</th><th>PO10</th><th>PO11</th><th>PO12</th>
+        <th>PSO1</th><th>PSO2</th><th>PSO3</th>
+      </tr>
+    </thead>
+    <tbody id="matrix-table-body">
+      {{MATRIX_TABLE_ROWS}}
+    </tbody>
+  </table>
+
+  <h2>6. Assessment & Evaluation Scheme</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Assessment Category</th>
+        <th>Component & Format</th>
+        <th style="width: 15%;">Target COs</th>
+        <th style="width: 12%; text-align: right;">Weightage</th>
+      </tr>
+    </thead>
+    <tbody id="assessment-table-body">
+      {{ASSESSMENT_TABLE_ROWS}}
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <div>Curriculum Status: <strong>{{WORKFLOW_STATUS}}</strong></div>
+    <div>Document Generated by SpecForge · ISO/IEC 17024 Compliant</div>
+    <div>Page 1 of 1</div>
+  </div>
+</body>
+</html>
