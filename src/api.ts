@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CourseSpec, Role, WorkflowState, SpecForgeOutput } from './types.ts';
+import type { CourseSpec, Role, WorkflowState, SpecForgeOutput } from './types.ts';
 
 export interface LlmSettings {
   provider: 'gemini' | 'openai' | 'anthropic';

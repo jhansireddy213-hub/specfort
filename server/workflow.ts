@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Role, WorkflowState, AuditLogEntry, SectionComment, CourseSpec } from '../src/types.ts';
+import type { Role, WorkflowState, AuditLogEntry, SectionComment, CourseSpec } from '../src/types.ts';
 
 export interface TransitionRequest {
   fromState: WorkflowState;

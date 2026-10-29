@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CourseSpec, Defect } from '../src/types.ts';
+import type { CourseSpec, Defect } from '../src/types.ts';
 
 export interface ValidationResult {
   defects: Defect[];

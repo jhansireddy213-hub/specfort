@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { extractLlmHeaders, checkLlmConnection } from './llm.ts';
 import { runValidationRules } from './validator.ts';
 import { applyTransition, canEditCourse } from './workflow.ts';
-import { CourseSpec, SpecForgeOutput, TemplateType } from '../src/types.ts';
+import type { CourseSpec, SpecForgeOutput, TemplateType } from '../src/types.ts';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });

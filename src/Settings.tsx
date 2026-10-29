@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Shield, Key, Cpu, Check, AlertCircle, Eye, EyeOff, X, Sparkles } from 'lucide-react';
-import { loadSettings, saveSettings, checkLlm, LlmSettings } from './api.ts';
+import { loadSettings, saveSettings, checkLlm } from './api.ts';
+import type { LlmSettings } from './api.ts';
 
 interface SettingsProps {
   isOpen: boolean;
