@@ -70,6 +70,7 @@ export default function App() {
   const [user, setUser] = useState<string>('Dr. A. Sharma • CSE Dept');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   // Active pipeline stage tab: 01 to 06 matching Google Stitch sidebar
   const [activePipelineTab, setActivePipelineTab] = useState<'01' | '02' | '03' | '04' | '05' | '06'>('02');
@@ -286,13 +287,18 @@ export default function App() {
   };
 
   // Handle Document Ingestion (L1)
-  const handleParseUpload = async () => {
+  const handleParseUpload = async (customSpec?: File, customBp?: File) => {
+    const fileToUse = customSpec || specFile;
+    const bpToUse = customBp || blueprintFile;
     setIsParsing(true);
     try {
-      const res = await parseCourseDocuments(specFile || undefined, blueprintFile || undefined);
+      const res = await parseCourseDocuments(fileToUse || undefined, bpToUse || undefined);
       if (res.success && res.data) {
         setSpec(res.data);
-        alert(`Successfully parsed and loaded course specification!`);
+        if (customSpec) setSpecFile(customSpec);
+        if (customBp) setBlueprintFile(customBp);
+        setActivePipelineTab('02');
+        setIsUploadModalOpen(false);
       } else {
         alert(`Parsing notice: ${res.error || 'Loaded current benchmark specification.'}`);
       }
@@ -443,8 +449,16 @@ export default function App() {
           </div>
         </div>
 
-        {/* Right: Actions (Preview, Save Draft, Profile, Settings) */}
+        {/* Right: Actions (Upload files, Preview, Save Draft, Profile, Settings) */}
         <div className="flex items-center gap-2.5 shrink-0">
+          <button
+            onClick={() => setIsUploadModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#1e293b] bg-white hover:bg-[#f1f5f9] border border-[#cbd5e1] rounded-md transition-colors shadow-2xs"
+          >
+            <Upload className="w-3.5 h-3.5 text-[#00696c]" />
+            <span>Upload files</span>
+          </button>
+
           <button
             onClick={() => setIsPreviewModalOpen(true)}
             className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#334155] bg-white hover:bg-[#f8fafc] border border-[#cbd5e1] rounded-md transition-colors"
@@ -962,40 +976,96 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="border-2 border-dashed border-[#cbd5e1] hover:border-[#1e293b] rounded-lg p-6 text-center cursor-pointer bg-[#f8fafc] transition-colors"
-                       onClick={() => document.getElementById('spec-file-input')?.click()}>
+                  {/* Specification File Card */}
+                  <label
+                    htmlFor="spec-file-input"
+                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const f = e.dataTransfer.files?.[0];
+                      if (f) {
+                        setSpecFile(f);
+                        handleParseUpload(f);
+                      }
+                    }}
+                    className="border-2 border-dashed border-[#cbd5e1] hover:border-[#1e293b] rounded-lg p-6 text-center cursor-pointer bg-[#f8fafc] hover:bg-[#f1f5f9] transition-all block"
+                  >
                     <Upload className="w-8 h-8 text-[#00696c] mx-auto mb-2" />
                     <div className="font-bold text-xs text-[#0f172a]">Course Specification (Required)</div>
-                    <div className="text-[11px] text-[#64748b] mt-1">Accepts .docx, .pdf, .html, .doc</div>
-                    {specFile && <div className="mt-2 text-xs font-mono font-bold text-[#00696c]">{specFile.name}</div>}
+                    <div className="text-[11px] text-[#64748b] mt-1">Accepts .docx, .pdf, .html, .doc, .txt</div>
+                    {specFile ? (
+                      <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded text-xs font-mono font-bold text-emerald-800 flex items-center justify-center gap-1.5">
+                        <Check className="w-4 h-4 text-emerald-600" />
+                        <span className="truncate">{specFile.name}</span>
+                      </div>
+                    ) : (
+                      <div className="mt-3 inline-block px-3 py-1 bg-[#1e293b] text-white rounded text-[11px] font-semibold">
+                        Choose File to Upload
+                      </div>
+                    )}
                     <input
                       id="spec-file-input"
                       type="file"
                       accept=".docx,.pdf,.html,.doc,.txt"
-                      className="hidden"
-                      onChange={(e) => e.target.files?.[0] && setSpecFile(e.target.files[0])}
+                      className="sr-only"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) {
+                          setSpecFile(f);
+                          handleParseUpload(f);
+                        }
+                      }}
                     />
-                  </div>
+                  </label>
 
-                  <div className="border-2 border-dashed border-[#cbd5e1] hover:border-[#1e293b] rounded-lg p-6 text-center cursor-pointer bg-[#f8fafc] transition-colors"
-                       onClick={() => document.getElementById('blueprint-file-input')?.click()}>
+                  {/* Blueprint File Card */}
+                  <label
+                    htmlFor="blueprint-file-input"
+                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const f = e.dataTransfer.files?.[0];
+                      if (f) {
+                        setBlueprintFile(f);
+                        handleParseUpload(specFile || undefined, f);
+                      }
+                    }}
+                    className="border-2 border-dashed border-[#cbd5e1] hover:border-[#1e293b] rounded-lg p-6 text-center cursor-pointer bg-[#f8fafc] hover:bg-[#f1f5f9] transition-all block"
+                  >
                     <FileText className="w-8 h-8 text-[#aa0093] mx-auto mb-2" />
                     <div className="font-bold text-xs text-[#0f172a]">Question-Paper Blueprint (Optional)</div>
                     <div className="text-[11px] text-[#64748b] mt-1">Extracts Course Outcomes and assessment mappings</div>
-                    {blueprintFile && <div className="mt-2 text-xs font-mono font-bold text-[#aa0093]">{blueprintFile.name}</div>}
+                    {blueprintFile ? (
+                      <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded text-xs font-mono font-bold text-emerald-800 flex items-center justify-center gap-1.5">
+                        <Check className="w-4 h-4 text-emerald-600" />
+                        <span className="truncate">{blueprintFile.name}</span>
+                      </div>
+                    ) : (
+                      <div className="mt-3 inline-block px-3 py-1 bg-white border border-[#cbd5e1] text-[#334155] rounded text-[11px] font-semibold">
+                        Optional: Attach Blueprint
+                      </div>
+                    )}
                     <input
                       id="blueprint-file-input"
                       type="file"
                       accept=".docx,.pdf,.html,.doc,.txt"
-                      className="hidden"
-                      onChange={(e) => e.target.files?.[0] && setBlueprintFile(e.target.files[0])}
+                      className="sr-only"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) {
+                          setBlueprintFile(f);
+                          handleParseUpload(specFile || undefined, f);
+                        }
+                      }}
                     />
-                  </div>
+                  </label>
                 </div>
 
                 <div className="flex items-center justify-between pt-4 border-t border-[#f1f5f9]">
                   <button
-                    onClick={handleParseUpload}
+                    onClick={() => handleParseUpload()}
                     disabled={isParsing}
                     className="px-4 py-2 text-xs font-bold text-white bg-[#1e293b] hover:bg-[#0f172a] rounded-md transition-colors disabled:opacity-50"
                   >
@@ -1502,7 +1572,135 @@ export default function App() {
         </div>
       )}
 
-      {/* 5. AI Settings Modal */}
+      {/* 5. MODAL: UPLOAD FILES */}
+      {isUploadModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-[#e2e8f0]">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded bg-[#eefcff] border border-[#47f0f6] flex items-center justify-center text-[#00696c]">
+                  <Upload className="w-4 h-4" />
+                </div>
+                <h3 className="font-bold text-base text-[#0f172a]">Upload Course Documents</h3>
+              </div>
+              <button
+                onClick={() => setIsUploadModalOpen(false)}
+                className="text-[#64748b] hover:text-[#0f172a] p-1 rounded"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <p className="text-[#64748b]">
+                Select an existing course syllabus (.docx, .pdf, .html, .doc, .txt) and an optional blueprint to populate the Course Specification Workbench:
+              </p>
+
+              {/* Spec File Label */}
+              <label
+                htmlFor="modal-spec-input"
+                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const f = e.dataTransfer.files?.[0];
+                  if (f) setSpecFile(f);
+                }}
+                className="border-2 border-dashed border-[#cbd5e1] hover:border-[#1e293b] rounded-lg p-4 text-center cursor-pointer bg-[#f8fafc] hover:bg-[#f1f5f9] transition-all block"
+              >
+                <Upload className="w-6 h-6 text-[#00696c] mx-auto mb-1.5" />
+                <div className="font-bold text-xs text-[#0f172a]">Course Specification (Required)</div>
+                <div className="text-[10px] text-[#64748b]">.docx, .pdf, .html, .doc, .txt</div>
+                {specFile ? (
+                  <div className="mt-2 text-xs font-mono font-bold text-emerald-800 bg-emerald-50 py-1 px-2 rounded border border-emerald-200">
+                    ✓ {specFile.name}
+                  </div>
+                ) : (
+                  <span className="mt-2 inline-block text-[11px] font-semibold text-[#00696c] underline">
+                    Click to Choose File or Drop Here
+                  </span>
+                )}
+                <input
+                  id="modal-spec-input"
+                  type="file"
+                  accept=".docx,.pdf,.html,.doc,.txt"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) setSpecFile(f);
+                  }}
+                />
+              </label>
+
+              {/* Blueprint File Label */}
+              <label
+                htmlFor="modal-bp-input"
+                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const f = e.dataTransfer.files?.[0];
+                  if (f) setBlueprintFile(f);
+                }}
+                className="border-2 border-dashed border-[#cbd5e1] hover:border-[#1e293b] rounded-lg p-4 text-center cursor-pointer bg-[#f8fafc] hover:bg-[#f1f5f9] transition-all block"
+              >
+                <FileText className="w-6 h-6 text-[#aa0093] mx-auto mb-1.5" />
+                <div className="font-bold text-xs text-[#0f172a]">Question-Paper Blueprint (Optional)</div>
+                <div className="text-[10px] text-[#64748b]">Extracts Course Outcomes and assessment mappings</div>
+                {blueprintFile ? (
+                  <div className="mt-2 text-xs font-mono font-bold text-emerald-800 bg-emerald-50 py-1 px-2 rounded border border-emerald-200">
+                    ✓ {blueprintFile.name}
+                  </div>
+                ) : (
+                  <span className="mt-2 inline-block text-[11px] font-semibold text-[#334155] underline">
+                    Click to Choose Blueprint
+                  </span>
+                )}
+                <input
+                  id="modal-bp-input"
+                  type="file"
+                  accept=".docx,.pdf,.html,.doc,.txt"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) setBlueprintFile(f);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between pt-3 border-t border-[#e2e8f0]">
+              <button
+                type="button"
+                onClick={() => handleParseUpload()}
+                className="text-xs font-semibold text-[#00696c] hover:underline"
+              >
+                Or Load Benchmark Sample
+              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsUploadModalOpen(false)}
+                  className="px-3 py-1.5 text-xs font-medium text-[#64748b] hover:bg-[#f1f5f9] rounded-md transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={isParsing || !specFile}
+                  onClick={() => handleParseUpload()}
+                  className="px-4 py-1.5 text-xs font-bold text-white bg-[#1e293b] hover:bg-[#0f172a] rounded-md transition-colors shadow-xs disabled:opacity-50"
+                >
+                  {isParsing ? 'Parsing with Zod...' : 'Upload & Parse Now'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 6. AI Settings Modal */}
       <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   );

@@ -174,16 +174,36 @@ router.post('/parse', upload.fields([{ name: 'spec', maxCount: 1 }, { name: 'blu
     let parsedSpec = getSampleCourseSpec();
 
     if (specFile) {
-      const fileName = specFile.originalname.toLowerCase();
-      const textContent = specFile.buffer.toString('utf-8');
+      const fileName = specFile.originalname;
+      const cleanFileName = fileName.replace(/\.[^/.]+$/, '');
+      const rawBufferStr = specFile.buffer.toString('utf-8', 0, Math.min(specFile.buffer.length, 500000));
 
-      // Attempt light heuristics on text file
-      if (fileName.endsWith('.html') || fileName.endsWith('.txt')) {
-        const codeMatch = textContent.match(/([A-Z]{2,4}-?[0-9]{3,4})/i);
-        if (codeMatch) parsedSpec.courseCode = codeMatch[1].toUpperCase();
+      // 1. Try to detect Course Code from content or filename
+      const codeMatch = rawBufferStr.match(/\b([A-Z]{2,5}-?[0-9]{3,4}[A-Z]?)\b/i) || cleanFileName.match(/\b([A-Z]{2,5}-?[0-9]{3,4}[A-Z]?)\b/i);
+      if (codeMatch) {
+        parsedSpec.courseCode = codeMatch[1].toUpperCase();
+      }
 
-        const titleMatch = textContent.match(/title[:\s]+([^\n\r<]+)/i);
-        if (titleMatch) parsedSpec.courseTitle = titleMatch[1].trim();
+      // 2. Try to detect Course Title from content or filename
+      const titleMatch = rawBufferStr.match(/course\s*title\s*[:\-]\s*([^\n\r<]{3,80})/i) || rawBufferStr.match(/title\s*[:\-]\s*([^\n\r<]{3,80})/i);
+      if (titleMatch) {
+        parsedSpec.courseTitle = titleMatch[1].trim();
+      } else if (cleanFileName.length > 5 && !cleanFileName.includes('spec') && !cleanFileName.includes('upload')) {
+        parsedSpec.courseTitle = cleanFileName.replace(/^[A-Z]{2,5}-?[0-9]{3,4}[A-Z]?[\s_\-]*/i, '').replace(/[_\-]+/g, ' ').trim() || parsedSpec.courseTitle;
+      }
+
+      // 3. Try to detect L:T:P credits
+      const ltpMatch = rawBufferStr.match(/\b([1-6])\s*[:\-]\s*([0-4])\s*[:\-]\s*([0-6])\b/);
+      if (ltpMatch) {
+        parsedSpec.creditsLTP = `${ltpMatch[1]}:${ltpMatch[2]}:${ltpMatch[3]}`;
+        const l = parseInt(ltpMatch[1], 10);
+        const t = parseInt(ltpMatch[2], 10);
+        const p = parseInt(ltpMatch[3], 10);
+        parsedSpec.lectureHours = l;
+        parsedSpec.tutorialHours = t;
+        parsedSpec.practicalHours = p;
+        parsedSpec.totalCredits = l + t + Math.floor(p / 2);
+        parsedSpec.totalContactHours = (l + t + p) * 15;
       }
     }
 
